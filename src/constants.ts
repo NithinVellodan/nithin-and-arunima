@@ -138,6 +138,11 @@ export const GUESTS: Guest[] = [
   { name: "Sisa Cueva", code: "sisa-cueva", group: "B", gender: "f" },
   { name: "Sara Cueva", code: "sara-cueva", group: "B", gender: "f" },
   { name: "Marianela Chávez", code: "marianela", group: "B", gender: "f" },
+  { name: "Pao Guillén & Antonio Cobos", code: "pao-antonio", group: "B", gender: "p" },
+  { name: "David Cobos", code: "david-cobos", group: "B", gender: "m" },
+  { name: "Andrea Lasso & Julio Díaz", code: "andrea-julio", group: "B", gender: "p" },
+  { name: "Martín Burbano", code: "martin-burbano", group: "B", gender: "m" },
+  { name: "Diana Harrington & Francisco Salazar", code: "diana-francisco", group: "B", gender: "p" },
   { name: "Pau Abumohor", code: "pau-abumohor", group: "B", gender: "f" },
 ];
 
