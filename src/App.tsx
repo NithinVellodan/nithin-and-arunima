@@ -629,23 +629,62 @@ export default function App() {
               <p key={i}>{paragraph}</p>
             ))}
           </div>
-          <div className="mt-12 grid grid-cols-2 gap-3 md:gap-6 max-w-3xl mx-auto">
-            <div className="relative overflow-hidden rounded-sm shadow-lg aspect-[4/5]">
-              <img
-                src="/images/paris.jpeg"
-                alt="Paris"
-                className="w-full h-full object-cover transition-all duration-700"
-                style={{ objectPosition: 'center 20%' }}
-              />
-            </div>
-            <div className="relative overflow-hidden rounded-sm shadow-lg aspect-[4/5] mt-8">
-              <img
-                src="/images/proposal.jpg"
-                alt="Proposal"
-                className="w-full h-full object-cover transition-all duration-700"
-                style={{ objectPosition: '35% center' }}
-              />
-            </div>
+          <div className="mt-16 grid grid-cols-2 gap-6 md:gap-10 max-w-3xl mx-auto">
+            {/* Photo 1 — Paris */}
+            <motion.div
+              initial={{ opacity: 0, y: 20, rotate: -3 }}
+              whileInView={{ opacity: 1, y: 0, rotate: -3 }}
+              whileHover={{ rotate: -1, scale: 1.03, zIndex: 10 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="relative"
+              style={{ filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.18))' }}
+            >
+              {/* Pushpin */}
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center">
+                <div className="w-5 h-5 rounded-full bg-gradient-to-br from-red-400 to-red-600 shadow-md border-2 border-red-300/60 ring-1 ring-black/10" />
+                <div className="w-[3px] h-4 bg-gradient-to-b from-zinc-400 to-zinc-600 rounded-b-sm" />
+              </div>
+              {/* Polaroid frame */}
+              <div className="bg-white p-2 pb-8 shadow-xl">
+                <div className="overflow-hidden aspect-[4/5]">
+                  <img
+                    src="/images/paris.jpeg"
+                    alt="Paris"
+                    className="w-full h-full object-cover transition-all duration-700"
+                    style={{ objectPosition: 'center 20%' }}
+                  />
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Photo 2 — Proposal */}
+            <motion.div
+              initial={{ opacity: 0, y: 20, rotate: 3 }}
+              whileInView={{ opacity: 1, y: 0, rotate: 3 }}
+              whileHover={{ rotate: 1, scale: 1.03, zIndex: 10 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              viewport={{ once: true }}
+              className="relative mt-10"
+              style={{ filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.18))' }}
+            >
+              {/* Pushpin */}
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center">
+                <div className="w-5 h-5 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 shadow-md border-2 border-blue-300/60 ring-1 ring-black/10" />
+                <div className="w-[3px] h-4 bg-gradient-to-b from-zinc-400 to-zinc-600 rounded-b-sm" />
+              </div>
+              {/* Polaroid frame */}
+              <div className="bg-white p-2 pb-8 shadow-xl">
+                <div className="overflow-hidden aspect-[4/5]">
+                  <img
+                    src="/images/proposal.jpg"
+                    alt="Proposal"
+                    className="w-full h-full object-cover transition-all duration-700"
+                    style={{ objectPosition: '35% center' }}
+                  />
+                </div>
+              </div>
+            </motion.div>
           </div>
           </div>
         </div>
