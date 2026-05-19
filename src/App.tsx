@@ -564,7 +564,7 @@ export default function App() {
     <div className="min-h-screen selection:bg-accent-blue/30 overflow-x-hidden relative">
         {/* Fixed background for mobile, regular background for desktop */}
         <div className="fixed inset-0 -z-10 md:hidden">
-          <div className="w-full h-full bg-cover bg-center bg-no-repeat" style={{ backgroundImage: 'url(/images/main-background-mobile.png)' }} />
+          <div className="w-full h-full bg-cover bg-center bg-no-repeat" style={{ backgroundImage: 'url(/images/hero-background-mobile.png)' }} />
         </div>
         <div className="hidden md:block fixed inset-0 -z-10 main-bg" />
         <div className="absolute inset-0 bg-overlay-white pointer-events-none" />
