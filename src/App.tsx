@@ -355,8 +355,8 @@ export default function App() {
     }
 
     setStep('opening');
-    setTimeout(() => setStep('opened'), 1500);
-    setTimeout(() => setStep('content'), 7000);
+    setTimeout(() => setStep('opened'), 600);
+    setTimeout(() => setStep('content'), 2800);
   };
 
   const handleAddToCalendar = () => {
@@ -465,7 +465,7 @@ export default function App() {
           <motion.div 
             className="absolute inset-0 z-10 flex items-center justify-center"
             animate={step === 'opened' ? { y: 300, opacity: 0, scale: 0.8 } : {}}
-            transition={{ duration: 1, ease: "easeIn" }}
+            transition={{ duration: 0.5, ease: "easeIn" }}
           >
             <div className="relative w-full h-full flex items-center justify-center">
               <img
@@ -512,8 +512,8 @@ export default function App() {
                 animate={{ y: -30, scale: 1, opacity: 1 }}
                 exit={{ opacity: 0, scale: 1.1 }}
                 transition={{
-                  duration: 0.8,
-                  delay: 0.3,
+                  duration: 0.5,
+                  delay: 0.1,
                   ease: [0.22, 1, 0.36, 1]
                 }}
                 className="absolute inset-2 sm:inset-0 sm:-translate-y-8 z-40 p-6 sm:p-8 md:p-12 shadow-2xl rounded-sm paper-texture flex flex-col items-center justify-center text-center border border-soft-blue/10 overflow-hidden"
