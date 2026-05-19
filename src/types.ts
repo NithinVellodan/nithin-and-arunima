@@ -5,7 +5,7 @@ export interface Guest {
   gender: 'f' | 'm' | 'p'; // f=female, m=male, p=plural/couple
 }
 
-export type Language = 'en' | 'fr' | 'es';
+export type Language = 'en' | 'ml';
 
 export interface Translation {
   letter: {
@@ -34,11 +34,15 @@ export interface Translation {
     party: string;
     snack: string;
     crazyHour: string;
+    receptionNote: string;
   };
   place: {
     title: string;
     address: string;
     viewMap: string;
+    title2: string;
+    address2: string;
+    viewMap2: string;
   };
   dressCode: {
     title: string;

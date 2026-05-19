@@ -148,15 +148,8 @@ export const GUESTS: Guest[] = [
 
 // Helper function to get gendered greeting
 export const getGreeting = (lang: Language, gender: 'f' | 'm' | 'p' | undefined): string => {
-  if (lang === 'es') {
-    if (gender === 'f') return 'Querida';
-    if (gender === 'm') return 'Querido';
-    return 'Queridos'; // plural or default
-  }
-  if (lang === 'fr') {
-    if (gender === 'f') return 'Chère';
-    if (gender === 'm') return 'Cher';
-    return 'Chers'; // plural or default
+  if (lang === 'ml') {
+    return 'പ്രിയ'; // Malayalam "Dear" doesn't change by gender
   }
   return 'Dear'; // English doesn't change
 };
@@ -165,12 +158,12 @@ export const TRANSLATIONS: Record<Language, Translation> = {
   en: {
     letter: {
       dear: "Dear",
-      message: "We are overjoyed to invite you to celebrate our special day in the heart of Ecuador. Your presence would mean the world to us.",
+      message: "With great joy in our hearts and the blessings of our families, we invite you to be part of our special celebration as we begin our journey together as one.",
       open: "Open Invitation"
     },
     hero: {
       countdown: "Counting down to our big day",
-      date: "August 29, 2026 • Quito, Ecuador",
+      date: "September 13, 2026 • Nilambur, Kerala",
       days: "Days",
       hours: "Hours",
       minutes: "Minutes",
@@ -179,30 +172,34 @@ export const TRANSLATIONS: Record<Language, Translation> = {
     },
     story: {
       title: "Our Story",
-      content: "We met at the end of 2020, starting over in Bremen; Camila arriving from Ecuador and Amin beginning a new chapter in a different city. What began as two people far from home grew into something real and beautiful: \"a connection that felt like home in itself.\"\n\nWe've been each other's support through the difficult moments and celebrated the happiest ones, from Amin's graduations to the day we decided to grow our family by adopting Zina, our rescue cat.\n\nIn January 2026, with a certainty we had long felt, Amin asked Camila to marry him. It wasn't a simple question, but it was the easiest answer: YES, for the rest of our lives."
+      content: "Arunima and Nithin's love story is a beautiful testament to the bonds that bring two hearts together. Woven with warmth, understanding, and unwavering support, their relationship has blossomed into a lifelong commitment.\n\nWith the blessings of both their families and the love of those around them, they now take this joyous step into a beautiful new chapter of their lives together.\n\nWe are delighted to invite you to be part of this special celebration as Arunima and Nithin begin their journey as bride and groom on September 13, 2026, in Nilambur, Kerala."
     },
     program: {
-      title: "Your Schedule",
-      ceremony: "Ceremony",
-      catering: "Catering",
-      firstDance: "First Dance",
-      party: "Dance Party",
-      snack: "Tentempié",
-      crazyHour: "Crazy Hour"
+      title: "Wedding Programme",
+      ceremony: "Muhurtham",
+      catering: "Sadya",
+      firstDance: "Reception",
+      party: "Dinner & Celebrations",
+      snack: "Snacks",
+      crazyHour: "Grand Finale",
+      receptionNote: "Reception: September 14 at KS Convention Centre, Nilambur"
     },
     place: {
-      title: "The Venue",
-      address: "L'Hacienda Ecuestre, Pifo, Ecuador",
-      viewMap: "View on Map"
+      title: "Venues",
+      address: "Eden Convention Center, Adyanpara Road, Akampadam, Nilambur, Kerala 679329",
+      viewMap: "View on Map",
+      title2: "Reception Venue",
+      address2: "KS Convention Centre, Pulikkalody, Mampad–Wandoor Road, Nilambur, Kerala 679329",
+      viewMap2: "View on Map"
     },
     dressCode: {
       title: "Dress Code",
-      description: "Formal Attire. We suggest elegant outfits suitable for an evening celebration in the Ecuadorian highlands.",
-      note: "White is reserved for the bride. Light blue for the groom."
+      description: "Traditional or Formal Attire. Ladies are warmly encouraged to wear sarees, churidar, or elegant formal wear. Gentlemen are welcome in traditional mundu-shirt or a formal suit.",
+      note: "White is reserved for the bride. Please avoid wearing white."
     },
     gift: {
-      title: "",
-      message: "We sincerely appreciate your kind contribution.",
+      title: "Contact Us",
+      message: "For RSVP and enquiries, feel free to reach out to us.",
       copy: "Copy",
       copied: "Copied!"
     },
@@ -224,148 +221,83 @@ export const TRANSLATIONS: Record<Language, Translation> = {
     faq: {
       title: "Details & FAQ",
       questions: [
-        { q: "Are children invited?", a: "While we love the little ones, we have decided that our wedding and reception will be an adults-only event. We hope you understand and enjoy a night off!" },
-        { q: "Can I bring someone else?", a: "Due to venue capacity limitations, we can only accommodate guests formally named on your invitation." },
-        { q: "Do I need to follow the dress code color palette exactly?", a: "It's not necessary to follow them strictly. The indicated colors are a guide. We invite you to choose tones within a Mediterranean palette, such as vivid or pastel colors, maintaining a harmonious style with the wedding atmosphere." },
-        { q: "Is there parking?", a: "Yes, there is ample parking available at the venue." }
+        { q: "Are children invited?", a: "Yes, children are warmly welcome to join us in the celebration. We kindly request that they be supervised by their parents throughout the event." },
+        { q: "Can I bring someone else?", a: "Due to venue capacity, we can only accommodate guests formally named on your invitation. Please contact us if you have any questions." },
+        { q: "What is the dress code?", a: "Traditional or formal Indian attire is preferred. Ladies may wear sarees, churidar, or elegant formal wear. Gentlemen are welcome in traditional mundu-shirt or a formal suit." },
+        { q: "Is there parking?", a: "Yes, parking is available at both venues. Please allow extra time as the venues may be busy during the celebrations." }
       ]
     }
   },
-  fr: {
+  ml: {
     letter: {
-      dear: "Chers",
-      message: "Nous sommes ravis de vous inviter à célébrer notre journée spéciale au cœur de l'Équateur. Votre présence compterait énormément pour nous.",
-      open: "Ouvrir l'invitation"
+      dear: "പ്രിയ",
+      message: "ഞങ്ങളുടെ ജീവിതയാത്ര ഒന്നിച്ച് ആരംഭിക്കുന്ന ഈ പ്രത്യേക ആഘോഷത്തിൽ പങ്കാളികളാകാൻ കുടുംബത്തിന്റെ അനുഗ്രഹത്തോടും ഹൃദയത്തിലെ സന്തോഷത്തോടും ഒപ്പം നിങ്ങളെ ക്ഷണിക്കുന്നു.",
+      open: "ക്ഷണം തുറക്കുക"
     },
     hero: {
-      countdown: "Compte à rebours jusqu'au grand jour",
-      date: "29 août 2026 • Quito, Équateur",
-      days: "Jours",
-      hours: "Heures",
-      minutes: "Minutes",
-      seconds: "Secondes",
-      readMore: "Lire la suite"
+      countdown: "ഞങ്ങളുടെ മഹത്തായ ദിനത്തിലേക്കുള്ള കണക്കെടുപ്പ്",
+      date: "സെപ്റ്റംബർ 13, 2026 • നിലമ്പൂർ, കേരളം",
+      days: "ദിവസങ്ങൾ",
+      hours: "മണിക്കൂർ",
+      minutes: "മിനിറ്റ്",
+      seconds: "സെക്കൻഡ്",
+      readMore: "കൂടുതൽ വായിക്കുക"
     },
     story: {
-      title: "Notre Histoire",
-      content: "Nous nous sommes rencontrés fin 2020, recommençant à zéro à Brême ; Camila arrivant d'Équateur et Amin commençant un nouveau chapitre dans une autre ville. Ce qui a commencé comme deux personnes loin de chez elles est devenu quelque chose de réel et de beau : « une connexion qui ressemblait à un foyer en elle-même ».\n\nNous avons été le soutien l'un de l'autre dans les moments difficiles et avons célébré les plus heureux, des diplômes d'Amin au jour où nous avons décidé d'agrandir notre famille en adoptant Zina, notre chatte rescapée.\n\nEn janvier 2026, avec une certitude que nous ressentions depuis longtemps, Amin a demandé Camila en mariage. Ce n'était pas une question simple, mais c'était la réponse la plus facile : OUI, pour le reste de nos vies."
+      title: "ഞങ്ങളുടെ കഥ",
+      content: "അരുണിമയുടെയും നിതിന്റെയും പ്രണയകഥ രണ്ടു ഹൃദയങ്ങളെ ഒന്നിപ്പിക്കുന്ന ഒരു മനോഹരമായ ബന്ധത്തിന്റെ സാക്ഷ്യമാണ്. ഊഷ്മളതയും മനസ്സിലാക്കലും അചഞ്ചലമായ പിന്തുണയും കൊണ്ട് നെയ്‌ത, അവരുടെ ബന്ധം ജീവിതകാല പ്രതിബദ്ധതയായി പരിണമിച്ചു.\n\nകുടുംബങ്ങളുടെ അനുഗ്രഹത്തോടെയും പ്രിയപ്പെട്ടവരുടെ സ്നേഹത്തോടെയും, അവർ ഇപ്പോൾ ജീവിതത്തിന്റെ ഒരു പുതിയ, മനോഹരമായ അദ്ധ്യായത്തിലേക്ക് ആഹ്ലാദകരമായ ഈ ചുവടുവെക്കുന്നു.\n\n2026 സെപ്റ്റംബർ 13-ന്, കേരളത്തിലെ നിലമ്പൂരിൽ, വധുവും വരനും ആയി ഒരുമിച്ചുള്ള അവരുടെ യാത്ര ആരംഭിക്കുമ്പോൾ ആ ആഘോഷത്തിന്റെ ഭാഗമാകാൻ നിങ്ങളെ ക്ഷണിക്കുന്നു."
     },
     program: {
-      title: "Votre Programme",
-      ceremony: "Cérémonie",
-      catering: "Cocktail & Dîner",
-      firstDance: "Ouverture de bal",
-      party: "Soirée Dansante",
-      snack: "En-cas",
-      crazyHour: "Heure de Folie"
+      title: "വിവാഹ പരിപാടി",
+      ceremony: "മുഹൂർത്തം",
+      catering: "സദ്യ",
+      firstDance: "റിസെപ്ഷൻ",
+      party: "അത്താഴവും ആഘോഷവും",
+      snack: "ലഘുഭക്ഷണം",
+      crazyHour: "സമാപനം",
+      receptionNote: "റിസെപ്ഷൻ: സെപ്റ്റംബർ 14, KS Convention Centre, നിലമ്പൂർ"
     },
     place: {
-      title: "Le Lieu",
-      address: "L'Hacienda Ecuestre, Pifo, Équateur",
-      viewMap: "Voir sur la carte"
+      title: "വേദികൾ",
+      address: "Eden Convention Center, അഡ്യൻപാറ റോഡ്, അക്കൻപടം, നിലമ്പൂർ, കേരളം 679329",
+      viewMap: "ഭൂപടത്തിൽ കാണുക",
+      title2: "റിസെപ്ഷൻ വേദി",
+      address2: "KS Convention Centre, പുലിക്കൽകോടി, Mampad–Wandoor Rd, നിലമ്പൂർ, കേരളം 679329",
+      viewMap2: "ഭൂപടത്തിൽ കാണുക"
     },
     dressCode: {
-      title: "Code Vestimentaire",
-      description: "Tenue de soirée. Nous suggérons des tenues élégantes adaptées à une célébration en soirée dans les hautes terres équatoriennes.",
-      note: "Le blanc est réservé à la mariée. Le bleu clair pour le marié."
+      title: "വസ്ത്ര നിർദേശം",
+      description: "പരമ്പരാഗത അല്ലെങ്കിൽ ഔദ്യോഗിക വേഷം. സ്ത്രീകൾ സാരി, ചുരിദാർ അല്ലെങ്കിൽ മനോഹരമായ ഔദ്യോഗിക വേഷം ധരിക്കാൻ ഞങ്ങൾ ആഗ്രഹിക്കുന്നു. പുരുഷന്മാർ പരമ്പരാഗത മുണ്ട്-ഷർട്ട് അല്ലെങ്കിൽ ഫോർമൽ സ്യൂട്ട് ധരിക്കാം.",
+      note: "വെള്ള നിറം വധുവിനായി സംവരണം ചെയ്തിരിക്കുന്നു. ദയവായി വെള്ള ഒഴിവാക്കുക."
     },
     gift: {
-      title: "",
-      message: "Nous vous remercions chaleureusement pour votre aimable contribution.",
-      copy: "Copier",
-      copied: "Copié !"
+      title: "ബന്ധപ്പെടുക",
+      message: "RSVP-യ്ക്കും അന്വേഷണങ്ങൾക്കും ദയവായി ഞങ്ങളെ ബന്ധപ്പെടുക.",
+      copy: "പകർത്തുക",
+      copied: "പകർത്തി!"
     },
     rsvp: {
-      title: "Nous apprécions votre confirmation",
-      name: "Votre Nom",
-      attendance: "Serez-vous présent ?",
-      attending: "Oui, je serai là",
-      notAttending: "Malheureusement, je ne pourrai pas assister",
-      guests: "Nombre d'invités",
-      dietary: "Restrictions alimentaires",
-      dietaryPlaceholder: "Si vous avez des allergies ou des restrictions alimentaires, veuillez nous en informer ici",
-      submit: "Envoyer la réponse",
-      thankYou: "Merci pour ta réponse !",
-      thankYouPlural: "Merci pour votre réponse !",
-      thankYouPersonal: "Merci, {name} !",
-      addToCalendar: "Ajouter au calendrier"
+      title: "നിങ്ങളുടെ സ്ഥിരീകരണം ഞങ്ങൾ വിലമതിക്കുന്നു",
+      name: "നിങ്ങളുടെ പേര്",
+      attendance: "നിങ്ങൾ പങ്കെടുക്കുമോ?",
+      attending: "അതെ, ഞാൻ അവിടെ ഉണ്ടാകും",
+      notAttending: "ഖേദകരമെന്നു പറയട്ടെ, എനിക്ക് പങ്കെടുക്കാൻ കഴിയില്ല",
+      guests: "അതിഥികളുടെ എണ്ണം",
+      dietary: "ഭക്ഷണ നിയന്ത്രണങ്ങൾ",
+      dietaryPlaceholder: "നിങ്ങൾക്ക് എന്തെങ്കിലും അലർജി അല്ലെങ്കിൽ ഭക്ഷണ നിയന്ത്രണങ്ങൾ ഉണ്ടെങ്കിൽ, ദയവായി ഇവിടെ അറിയിക്കുക",
+      submit: "പ്രതികരണം അയക്കുക",
+      thankYou: "നിങ്ങളുടെ പ്രതികരണത്തിന് നന്ദി!",
+      thankYouPlural: "നിങ്ങളുടെ പ്രതികരണത്തിന് നന്ദി!",
+      thankYouPersonal: "നന്ദി, {name}!",
+      addToCalendar: "കലണ്ടറിൽ ചേർക്കുക"
     },
     faq: {
-      title: "Détails & FAQ",
+      title: "വിവരങ്ങളും പതിവ് ചോദ്യങ്ങളും",
       questions: [
-        { q: "Les enfants sont-ils invités ?", a: "Bien que nous adorions les plus jeunes, nous avons décidé que notre mariage et notre réception seraient un événement réservé aux adultes. Nous espérons que vous comprendrez et profiterez d'une soirée libre !" },
-        { q: "Puis-je amener quelqu'un d'autre ?", a: "En raison des limitations de capacité du lieu, nous ne pouvons accueillir que les invités formellement nommés sur votre invitation." },
-        { q: "Dois-je suivre exactement la palette de couleurs du code vestimentaire ?", a: "Ce n'est pas nécessaire de les suivre strictement. Les couleurs indiquées sont un guide. Nous vous invitons à choisir des tons dans une palette méditerranéenne, comme des couleurs vives ou pastel, en maintenant un style harmonieux avec l'ambiance du mariage." },
-        { q: "Y a-t-il un parking ?", a: "Oui, un grand parking est disponible sur place." }
-      ]
-    }
-  },
-  es: {
-    letter: {
-      dear: "Queridos",
-      message: "Estamos encantados de invitarlos a celebrar nuestro día especial en el corazón de Ecuador. Su presencia significaría mucho para nosotros.",
-      open: "Abrir Invitación"
-    },
-    hero: {
-      countdown: "Cuenta atrás para nuestro gran día",
-      date: "29 de agosto de 2026 • Quito, Ecuador",
-      days: "Días",
-      hours: "Horas",
-      minutes: "Minutos",
-      seconds: "Segundos",
-      readMore: "Leer más"
-    },
-    story: {
-      title: "Nuestra Historia",
-      content: "Nos conocimos a finales de 2020, comenzando de nuevo en Bremen; Camila llegando desde Ecuador y Amin iniciando un nuevo capítulo en una ciudad diferente. Lo que comenzó como dos personas lejos de casa, se convirtió en algo real y hermoso: \"una conexión que se sentía como hogar en sí misma\".\n\nHemos sido apoyo uno del otro en los momentos difíciles y celebrado los más felices, desde las graduaciones de Amin hasta el día en que decidimos hacer crecer nuestra familia adoptando a Zina, nuestra gata rescatada.\n\nEn enero de 2026, con una certeza que sentíamos desde hace tiempo, Amin le pidió a Camila que se casara con él. No fue una pregunta simple, pero, fue la respuesta más fácil: SÍ, para el resto de nuestras vidas."
-    },
-    program: {
-      title: "Tu Horario",
-      ceremony: "Ceremonia",
-      catering: "Banquete",
-      firstDance: "Primer Baile",
-      party: "Fiesta",
-      snack: "Tentempié",
-      crazyHour: "Hora Loca"
-    },
-    place: {
-      title: "El Lugar",
-      address: "L'Hacienda Ecuestre, Pifo, Ecuador",
-      viewMap: "Ver en el mapa"
-    },
-    dressCode: {
-      title: "Código de Vestimenta",
-      description: "Traje Formal. Sugerimos atuendos elegantes adecuados para una celebración en la tarde.",
-      note: "El blanco está reservado para la novia. El azul claro para el novio."
-    },
-    gift: {
-      title: "",
-      message: "Agradecemos con mucho cariño su gentil contribución.",
-      copy: "Copiar",
-      copied: "¡Copiado!"
-    },
-    rsvp: {
-      title: "Agradecemos su confirmación",
-      name: "Tu Nombre",
-      attendance: "¿Asistirás?",
-      attending: "Sí, allí estaré",
-      notAttending: "Lamentablemente no podré asistir",
-      guests: "Número de invitados",
-      dietary: "Restricciones alimentarias",
-      dietaryPlaceholder: "Si tienes alguna alergia o restricción alimentaria, por favor indícala aquí",
-      submit: "Enviar respuesta",
-      thankYou: "¡Gracias por tu respuesta!",
-      thankYouPlural: "¡Gracias por su respuesta!",
-      thankYouPersonal: "¡Gracias, {name}!",
-      addToCalendar: "Añadir al calendario"
-    },
-    faq: {
-      title: "Detalles y Preguntas Frecuentes",
-      questions: [
-        { q: "¿Están invitados los niños?", a: "Aunque amamos a los más pequeños, hemos decidido que nuestra boda y recepción sean un evento solo para adultos. ¡Esperamos que lo entiendan y disfruten de una noche libre!" },
-        { q: "¿Puedo llevar a alguien más?", a: "Debido a las limitaciones de capacidad del lugar, solo podemos acomodar a los invitados nombrados formalmente en su invitación." },
-        { q: "¿Debo seguir exactamente la paleta de colores del código de vestimenta?", a: "No es necesario seguirlos de manera estricta. Los colores indicados son una guía. Les invitamos a elegir tonos dentro de una paleta mediterránea, como colores vivos o pasteles, manteniendo un estilo armonioso con el ambiente de la boda." },
-        { q: "¿Hay estacionamiento?", a: "Sí, hay un amplio estacionamiento disponible en el lugar." }
+        { q: "കുട്ടികൾ ക്ഷണിക്കപ്പെട്ടിട്ടുണ്ടോ?", a: "അതെ, കുട്ടികളെ ആഘോഷത്തിൽ സ്വാഗതം ചെയ്യുന്നു. ചടങ്ങ് മുഴുവൻ അവരെ ശ്രദ്ധിക്കണമെന്ന് ദയാപൂർവം അഭ്യർഥിക്കുന്നു." },
+        { q: "ഞാൻ മറ്റൊരാളെ കൊണ്ടുവരാമോ?", a: "വേദിയുടെ ശേഷി പരിമിതി കാരണം, ക്ഷണക്കത്തിൽ ഔദ്യോഗികമായി പേര് ചേർത്ത അതിഥികൾക്ക് മാത്രമേ ഞങ്ങൾക്ക് സ്ഥലം നൽകാൻ കഴിയൂ." },
+        { q: "വസ്ത്ര നിർദേശം എന്താണ്?", a: "പരമ്പരാഗത അല്ലെങ്കിൽ ഔദ്യോഗിക ഇന്ത്യൻ വേഷം അഭിലഷണീയം. സ്ത്രീകൾ സാരി, ചുരിദാർ ധരിക്കാം. പുരുഷന്മാർ മുണ്ട്-ഷർട്ട് അല്ലെങ്കിൽ ഫോർമൽ സ്യൂട്ട് ധരിക്കാം." },
+        { q: "പാർക്കിംഗ് സൗകര്യം ഉണ്ടോ?", a: "അതെ, രണ്ടു വേദികളിലും പാർക്കിംഗ് സൗകര്യം ലഭ്യമാണ്. ആഘോഷ വേളകളിൽ തിരക്ക് പ്രതീക്ഷിക്കുന്നതിനാൽ അൽപ്പം നേരത്തെ എത്തുക." }
       ]
     }
   }

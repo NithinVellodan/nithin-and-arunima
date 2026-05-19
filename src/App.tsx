@@ -29,7 +29,7 @@ import { Guest, Language } from './types';
 
 const LanguageToggle = ({ current, onChange }: { current: Language, onChange: (l: Language) => void }) => (
   <div className="fixed top-6 right-6 z-50 flex gap-2 bg-white/80  p-1 rounded-full border border-med-blue/20 shadow-sm">
-    {(['es', 'en', 'fr'] as Language[]).map((lang) => (
+    {(['en', 'ml'] as Language[]).map((lang) => (
       <button
         key={lang}
         onClick={() => onChange(lang)}
@@ -37,7 +37,7 @@ const LanguageToggle = ({ current, onChange }: { current: Language, onChange: (l
           current === lang ? 'bg-med-blue text-white shadow-md' : 'text-med-blue hover:bg-med-blue/10'
         }`}
       >
-        {lang.toUpperCase()}
+        {lang === 'ml' ? 'മലയാളം' : 'EN'}
       </button>
     ))}
   </div>
@@ -48,7 +48,7 @@ const Countdown = ({ lang }: { lang: Language }) => {
   const t = TRANSLATIONS[lang].hero;
 
   useEffect(() => {
-    const targetDate = new Date('2026-08-29T12:00:00');
+    const targetDate = new Date('2026-09-13T10:30:00');
     const timer = setInterval(() => {
       const now = new Date();
       const diff = targetDate.getTime() - now.getTime();
@@ -120,9 +120,9 @@ const CallaLily = ({ className = "" }: { className?: string }) => (
 
 const MonogramBadge = ({ className = "" }: { className?: string }) => (
   <div className={`w-20 h-20 rounded-full border border-med-blue/20 flex items-center justify-center font-serif text-med-blue text-2xl tracking-tighter bg-white shadow-sm ${className}`}>
-    <span className="relative -left-1">C</span>
+    <span className="relative -left-1">A</span>
     <span className="text-soft-blue opacity-50">&</span>
-    <span className="relative -right-1">A</span>
+    <span className="relative -right-1">N</span>
   </div>
 );
 
@@ -161,7 +161,7 @@ export default function App() {
   const [step, setStep] = useState<'closed' | 'opening' | 'opened' | 'content'>('closed');
   const [lang, setLang] = useState<Language>(() => {
     const saved = localStorage.getItem('wedding-lang');
-    return (saved as Language) || 'es';
+    return (saved === 'en' || saved === 'ml') ? saved : 'en';
   });
   const [guest, setGuest] = useState<Guest | null>(null);
   const [rsvpStatus, setRsvpStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
@@ -184,16 +184,15 @@ export default function App() {
 
     // Update page title based on language
     const titles = {
-      es: 'CAMIN Invitación de Boda',
-      en: 'CAMIN Wedding Invitation',
-      fr: 'CAMIN Invitation de Mariage'
+      en: 'Arunima & Nithin Wedding',
+      ml: 'അരുണിമ & നിതിൻ വിവാഹ ക്ഷണം'
     };
     document.title = titles[lang];
     document.documentElement.lang = lang;
   }, [lang]);
 
   const t = TRANSLATIONS[lang];
-  const guestName = guest ? guest.name : (lang === 'es' ? "Amigos y Familia" : lang === 'en' ? "Friends & Family" : "Amis & Famille");
+  const guestName = guest ? guest.name : (lang === 'ml' ? "സ്നേഹിതരും കുടുംബവും" : "Friends & Family");
 
   useEffect(() => {
     setFormData({ ...formData, name: guestName });
@@ -362,11 +361,11 @@ export default function App() {
 
   const handleAddToCalendar = () => {
     const eventDetails = {
-      title: 'Camila & Amin Wedding',
-      description: 'Wedding celebration at L\'Hacienda Ecuestre, Pifo, Ecuador',
-      location: 'L\'Hacienda Ecuestre, Pifo, Ecuador',
-      startTime: '2026-08-29T12:30:00',
-      endTime: '2026-08-29T18:00:00'
+      title: 'Arunima & Nithin Wedding',
+      description: 'Wedding ceremony at Eden Convention Center, Akampadam, Nilambur, Kerala',
+      location: 'Eden Convention Center, Adyanpara Road, Akampadam, Nilambur, Kerala 679329',
+      startTime: '2026-09-13T10:30:00',
+      endTime: '2026-09-13T13:00:00'
     };
 
     // Detect iOS
@@ -598,7 +597,7 @@ export default function App() {
             <span className="font-sans text-xs tracking-[0.3em] uppercase text-med-blue font-semibold">Save the Date</span>
             <div className="w-12 h-px bg-med-blue opacity-30" />
           </div>
-          <h1 className="text-6xl md:text-8xl font-serif text-med-blue mb-4">Camila & Amin</h1>
+          <h1 className="text-6xl md:text-8xl font-serif text-med-blue mb-4">Arunima & Nithin</h1>
           <p className="text-xl md:text-2xl font-serif italic text-soft-blue">{t.hero.date}</p>
           <Countdown lang={lang} />
           <motion.div
@@ -657,15 +656,13 @@ export default function App() {
         <CallaLily className="top-1/2 -right-10 -rotate-45 opacity-20" />
         <div className="space-y-6">
           {(guest?.group === 'B' ? [
-            { time: "15:00", event: t.program.firstDance, icon: Music },
-            { time: "15:30", event: t.program.party, icon: Heart },
-            { time: "", event: t.program.snack, icon: Utensils },
+            { time: "18:00", event: t.program.firstDance, icon: Music },
+            { time: "19:30", event: t.program.catering, icon: Utensils },
+            { time: "21:00", event: t.program.party, icon: Heart },
             { time: "", event: t.program.crazyHour, icon: Music },
           ] : [
-            { time: "12:30", event: t.program.ceremony, icon: Heart },
-            { time: "13:30", event: t.program.catering, icon: Utensils },
-            { time: "15:00", event: t.program.firstDance, icon: Music },
-            { time: "15:30", event: t.program.party, icon: Music },
+            { time: "10:30", event: t.program.ceremony, icon: Heart },
+            { time: "11:00", event: t.program.catering, icon: Utensils },
           ]).map((item, i) => (
             <motion.div
               key={i}
@@ -689,56 +686,72 @@ export default function App() {
               <item.icon className="text-soft-blue opacity-40 relative z-10" size={20} />
             </motion.div>
           ))}
+          {guest?.group !== 'B' && (
+            <p className="text-center text-sm font-serif italic text-soft-blue mt-4 opacity-80">
+              {t.program.receptionNote}
+            </p>
+          )}
         </div>
       </Section>
 
       {/* Place */}
       <Section title={t.place.title} id="place">
-        <div
-          className="p-8 md:p-12 shadow-xl rounded-sm border border-soft-blue/10 relative overflow-hidden text-center"
-          style={{
-            backgroundImage: 'url(/images/test.png)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        >
-          <div className="absolute inset-0 bg-white/65 " />
-          <div className="relative z-10">
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-              className="flex justify-center mb-6"
-            >
-              <MapPin className="text-med-blue opacity-50" size={40} />
-            </motion.div>
-            <h3 className="text-2xl font-serif text-ink mb-2">L'Hacienda Ecuestre</h3>
-            <p className="text-soft-blue mb-8 font-serif italic">{t.place.address}</p>
-          </div>
-          <div className="aspect-video bg-accent-blue/10 rounded-sm overflow-hidden mb-8 relative z-10">
-             <img
-              src="/images/hacienda.png"
-              alt="L'Hacienda Ecuestre"
-              className="w-full h-full object-cover opacity-80"
-            />
-            <div className="absolute inset-0 md:flex items-center justify-center hidden">
-               <a
-                 href="https://maps.app.goo.gl/3aixR56aD6SBwfi66"
-                 target="_blank"
-                 rel="noopener noreferrer"
-                 className="px-6 py-2 bg-white/90  text-med-blue border border-med-blue/20 rounded-full font-sans text-xs tracking-widest uppercase hover:bg-med-blue hover:text-white transition-all"
-               >
+        <div className="space-y-6">
+          {/* Wedding Venue */}
+          <div
+            className="p-8 md:p-12 shadow-xl rounded-sm border border-soft-blue/10 relative overflow-hidden text-center"
+            style={{ backgroundImage: 'url(/images/hacienda.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+          >
+            <div className="absolute inset-0 bg-white/65" />
+            <div className="relative z-10">
+              <p className="text-[10px] uppercase tracking-widest text-soft-blue mb-4 font-sans">Sept 13 · വിവാഹം / Wedding</p>
+              <motion.div
+                animate={{ y: [0, 10, 0] }}
+                transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                className="flex justify-center mb-4"
+              >
+                <MapPin className="text-med-blue opacity-50" size={36} />
+              </motion.div>
+              <h3 className="text-2xl font-serif text-ink mb-2">Eden Convention Center</h3>
+              <p className="text-soft-blue mb-6 font-serif italic text-sm">{t.place.address}</p>
+              <a
+                href="https://maps.app.goo.gl/1322ZxpxwhrF1wK1A"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block px-6 py-2 bg-white/90 text-med-blue border border-med-blue/20 rounded-full font-sans text-xs tracking-widest uppercase hover:bg-med-blue hover:text-white transition-all"
+              >
                 {t.place.viewMap}
               </a>
             </div>
           </div>
-          <a
-            href="https://maps.app.goo.gl/3aixR56aD6SBwfi66"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="md:hidden inline-block px-6 py-2 bg-white/90 text-med-blue border border-med-blue/20 rounded-full font-sans text-xs tracking-widest uppercase hover:bg-med-blue hover:text-white transition-all relative z-10"
+
+          {/* Reception Venue */}
+          <div
+            className="p-8 md:p-12 shadow-xl rounded-sm border border-soft-blue/10 relative overflow-hidden text-center"
+            style={{ backgroundImage: 'url(/images/haciendaTwo.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
           >
-            {t.place.viewMap}
-          </a>
+            <div className="absolute inset-0 bg-white/65" />
+            <div className="relative z-10">
+              <p className="text-[10px] uppercase tracking-widest text-soft-blue mb-4 font-sans">Sept 14 · റിസെപ്ഷൻ / Reception</p>
+              <motion.div
+                animate={{ y: [0, 10, 0] }}
+                transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+                className="flex justify-center mb-4"
+              >
+                <MapPin className="text-med-blue opacity-50" size={36} />
+              </motion.div>
+              <h3 className="text-2xl font-serif text-ink mb-2">KS Convention Centre</h3>
+              <p className="text-soft-blue mb-6 font-serif italic text-sm">{t.place.address2}</p>
+              <a
+                href="https://maps.app.goo.gl/CDdNchSH5qXrDrdo9"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block px-6 py-2 bg-white/90 text-med-blue border border-med-blue/20 rounded-full font-sans text-xs tracking-widest uppercase hover:bg-med-blue hover:text-white transition-all"
+              >
+                {t.place.viewMap2}
+              </a>
+            </div>
+          </div>
         </div>
       </Section>
 
@@ -794,38 +807,12 @@ export default function App() {
           </motion.div>
           <p className="text-lg text-soft-blue mb-10 font-serif italic max-w-md mx-auto">{t.gift.message}</p>
           
-          <div className="space-y-6 max-w-md mx-auto">
-            <div className="p-4 bg-paper/50 rounded-sm border border-soft-blue/10 text-left">
-              <p className="text-[10px] uppercase tracking-widest text-soft-blue mb-1 font-sans">Germany (Sparkasse)</p>
-              <p className="font-serif text-ink mb-1">Amin El Abed</p>
-              <div className="space-y-2">
-                <div>
-                  <p className="text-[9px] uppercase tracking-wider text-soft-blue/70 font-sans">BIC</p>
-                  <code className="text-xs sm:text-sm font-mono text-med-blue">SBREDE22XXX</code>
-                </div>
-                <div className="flex items-center justify-between gap-2">
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[9px] uppercase tracking-wider text-soft-blue/70 font-sans">IBAN</p>
-                    <code className="text-[10px] sm:text-sm font-mono text-med-blue block whitespace-nowrap overflow-hidden text-ellipsis">DE53 2905 0101 0083 6691 50</code>
-                  </div>
-                  <div className="flex-shrink-0">
-                    <CopyButton text="DE53290501010083669150" label={t.gift.copy} copiedLabel={t.gift.copied} />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-4 bg-paper/50 rounded-sm border border-soft-blue/10 text-left">
-              <p className="text-[10px] uppercase tracking-widest text-soft-blue mb-1 font-sans">Ecuador (Banco Pichincha)</p>
-              <p className="font-serif text-ink mb-1">Camila Meza</p>
-              <div className="space-y-2">
-                <div>
-                  <p className="text-[9px] uppercase tracking-wider text-soft-blue/70 font-sans">Cuenta de ahorro</p>
-                  <div className="flex items-center justify-between mt-1">
-                    <code className="text-xs font-mono text-med-blue">2202037549</code>
-                    <CopyButton text="2202037549" label={t.gift.copy} copiedLabel={t.gift.copied} />
-                  </div>
-                </div>
+          <div className="max-w-sm mx-auto">
+            <div className="p-6 bg-paper/50 rounded-sm border border-soft-blue/10 text-center">
+              <p className="text-[10px] uppercase tracking-widest text-soft-blue mb-3 font-sans">Phone / WhatsApp</p>
+              <div className="flex items-center justify-center gap-4">
+                <code className="text-2xl font-serif text-med-blue tracking-wide">+919961863784</code>
+                <CopyButton text="+919961863784" label={t.gift.copy} copiedLabel={t.gift.copied} />
               </div>
             </div>
           </div>
@@ -988,7 +975,7 @@ export default function App() {
           alt="Wedding Logo"
           className="w-12 h-12 mb-4 opacity-90 mx-auto object-contain"
         />
-        <p className="font-serif text-soft-blue italic">C & A • 2026</p>
+        <p className="font-serif text-soft-blue italic">A & N • 2026</p>
       </footer>
       </div>
     </div>
