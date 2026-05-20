@@ -693,21 +693,59 @@ export default function App() {
       {/* Program */}
       <Section title={t.program.title} id="program">
         <CallaLily className="top-1/2 -right-10 -rotate-45 opacity-20" />
-        <div className="space-y-6">
-          {(guest?.group === 'B' ? [
-            { time: "18:00", event: t.program.firstDance, icon: Music },
-            { time: "19:30", event: t.program.catering, icon: Utensils },
-            { time: "21:00", event: t.program.party, icon: Heart },
-            { time: "", event: t.program.crazyHour, icon: Music },
-          ] : [
-            { time: "10:30", event: t.program.ceremony, icon: Heart },
-            { time: "11:00", event: t.program.catering, icon: Utensils },
-          ]).map((item, i) => (
+        <div className="space-y-10">
+
+          {/* Day 1 — September 13 */}
+          <div>
+            <p className="text-[11px] uppercase tracking-widest text-soft-blue font-sans mb-4 text-center">
+              {lang === 'ml' ? 'സെപ്റ്റംബർ 13 · വിവാഹ ദിനം' : 'September 13 · Wedding Day'}
+            </p>
+            <div className="space-y-4">
+              {[
+                { time: "10:30 AM", event: t.program.ceremony, icon: Heart },
+                { time: "12:00 PM", event: t.program.catering, icon: Utensils },
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  viewport={{ once: true }}
+                  className="flex items-center gap-6 p-6 rounded-sm border-l-2 border-med-blue shadow-sm hover:shadow-md transition-shadow relative overflow-hidden"
+                  style={{
+                    backgroundImage: 'url(/images/test.png)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }}
+                >
+                  <div className="absolute inset-0 bg-white/65" />
+                  <div className="text-lg font-serif text-med-blue w-28 relative z-10 shrink-0">{item.time}</div>
+                  <div className="w-px h-8 bg-accent-blue opacity-30 relative z-10" />
+                  <div className="flex-1 relative z-10">
+                    <h3 className="text-xl font-serif text-ink">{item.event}</h3>
+                  </div>
+                  <item.icon className="text-soft-blue opacity-40 relative z-10" size={20} />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div className="flex items-center gap-4">
+            <div className="flex-1 h-px bg-soft-blue/20" />
+            <span className="text-soft-blue/40 text-xs font-sans tracking-widest">✦</span>
+            <div className="flex-1 h-px bg-soft-blue/20" />
+          </div>
+
+          {/* Day 2 — September 14 */}
+          <div>
+            <p className="text-[11px] uppercase tracking-widest text-soft-blue font-sans mb-4 text-center">
+              {lang === 'ml' ? 'സെപ്റ്റംബർ 14 · വിവാഹ റിസെപ്ഷൻ' : 'September 14 · Wedding Reception'}
+            </p>
             <motion.div
-              key={i}
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.1 }}
+              transition={{ delay: 0.1 }}
               viewport={{ once: true }}
               className="flex items-center gap-6 p-6 rounded-sm border-l-2 border-med-blue shadow-sm hover:shadow-md transition-shadow relative overflow-hidden"
               style={{
@@ -716,20 +754,17 @@ export default function App() {
                 backgroundPosition: 'center',
               }}
             >
-              <div className="absolute inset-0 bg-white/65 " />
-              <div className="text-2xl font-serif text-med-blue w-20 relative z-10">{item.time}</div>
+              <div className="absolute inset-0 bg-white/65" />
+              <div className="text-lg font-serif text-med-blue w-28 relative z-10 shrink-0">6:00 PM</div>
               <div className="w-px h-8 bg-accent-blue opacity-30 relative z-10" />
               <div className="flex-1 relative z-10">
-                <h3 className="text-xl font-serif text-ink">{item.event}</h3>
+                <h3 className="text-xl font-serif text-ink">{lang === 'ml' ? 'വിവാഹ റിസെപ്ഷൻ' : 'Wedding Reception'}</h3>
+                <p className="text-xs font-sans text-soft-blue mt-1 opacity-70">KS Convention Centre, Nilambur</p>
               </div>
-              <item.icon className="text-soft-blue opacity-40 relative z-10" size={20} />
+              <Music className="text-soft-blue opacity-40 relative z-10" size={20} />
             </motion.div>
-          ))}
-          {guest?.group !== 'B' && (
-            <p className="text-center text-sm font-serif italic text-soft-blue mt-4 opacity-80">
-              {t.program.receptionNote}
-            </p>
-          )}
+          </div>
+
         </div>
       </Section>
 
@@ -767,7 +802,7 @@ export default function App() {
           {/* Reception Venue */}
           <div
             className="p-8 md:p-12 shadow-xl rounded-sm border border-soft-blue/10 relative overflow-hidden text-center"
-            style={{ backgroundImage: 'url(/images/haciendaTwo.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+            style={{ backgroundImage: 'url(/images/haciendaTwo.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
           >
             <div className="absolute inset-0 bg-white/65" />
             <div className="relative z-10">
@@ -795,7 +830,7 @@ export default function App() {
       </Section>
 
       {/* Dress Code */}
-      <Section title={t.dressCode.title} id="dresscode">
+      {/* <Section title={t.dressCode.title} id="dresscode">
         <div
           className="p-8 md:p-12 shadow-xl rounded-sm border border-soft-blue/10 relative overflow-hidden text-center"
           style={{
@@ -823,7 +858,7 @@ export default function App() {
           <p className="text-sm text-med-blue/60 font-sans uppercase tracking-widest">{t.dressCode.note}</p>
           </div>
         </div>
-      </Section>
+      </Section> */}
 
       {/* Honeymoon */}
       <Section title={t.gift.title} id="gift">
@@ -860,7 +895,7 @@ export default function App() {
       </Section>
 
       {/* RSVP */}
-      <Section title={t.rsvp.title} id="rsvp">
+      {/* <Section title={t.rsvp.title} id="rsvp">
         <div
           className="p-8 md:p-12 shadow-xl rounded-sm border border-soft-blue/10 relative overflow-hidden"
           style={{
@@ -969,10 +1004,10 @@ export default function App() {
           </AnimatePresence>
           </div>
         </div>
-      </Section>
+      </Section> */}
 
       {/* FAQ */}
-      <Section title={t.faq.title} id="faq">
+      {/* <Section title={t.faq.title} id="faq">
         <div className="space-y-4">
           {t.faq.questions.map((item, i) => (
             <details
@@ -1005,7 +1040,7 @@ export default function App() {
             </details>
           ))}
         </div>
-      </Section>
+      </Section> */}
 
       {/* Footer */}
       <footer className="py-20 text-center border-t border-soft-blue/10">

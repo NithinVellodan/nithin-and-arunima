@@ -182,7 +182,7 @@ export const TRANSLATIONS: Record<Language, Translation> = {
       party: "Dinner & Celebrations",
       snack: "Snacks",
       crazyHour: "Grand Finale",
-      receptionNote: "Reception: September 14 at KS Convention Centre, Nilambur"
+      receptionNote: "Reception at KS Convention Centre, Nilambur"
     },
     place: {
       title: "Venues",
@@ -199,7 +199,7 @@ export const TRANSLATIONS: Record<Language, Translation> = {
     },
     gift: {
       title: "Contact Us",
-      message: "For RSVP and enquiries, feel free to reach out to us.",
+      message: "For  any Enquiries, feel free to reach out to us.",
       copy: "Copy",
       copied: "Copied!"
     },
@@ -255,7 +255,7 @@ export const TRANSLATIONS: Record<Language, Translation> = {
       party: "അത്താഴവും ആഘോഷവും",
       snack: "ലഘുഭക്ഷണം",
       crazyHour: "സമാപനം",
-      receptionNote: "റിസെപ്ഷൻ: സെപ്റ്റംബർ 14, KS Convention Centre, നിലമ്പൂർ"
+      receptionNote: "റിസെപ്ഷൻ: KS Convention Centre, നിലമ്പൂർ"
     },
     place: {
       title: "വേദികൾ",
