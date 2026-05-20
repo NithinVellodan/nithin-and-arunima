@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Arunima-Nithin Wedding//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:arunima-nithin-wedding-20260913@wedding.invite
+DTSTAMP:20260520T000000Z
+DTSTART:20260913T050000Z
+DTEND:20260913T073000Z
+SUMMARY:Arunima & Nithin Wedding Ceremony
+DESCRIPTION:Wedding ceremony at Eden Convention Center, Akampadam, Nilambur, Kerala
+LOCATION:Eden Convention Center, Adyanpara Road, Akampadam, Nilambur, Kerala 679329
+END:VEVENT
+END:VCALENDAR

@@ -438,35 +438,44 @@ export default function App() {
     setTimeout(() => setStep('opened'), 600);
   };
 
-  const handleAddToCalendar = () => {
-    const events = [
-      {
-        uid: 'arunima-nithin-wedding-20260913@wedding.invite',
+  const handleAddToCalendar = (eventType: 'wedding' | 'reception') => {
+    const events = {
+      wedding: {
         title: 'Arunima & Nithin Wedding Ceremony',
         description: 'Wedding ceremony at Eden Convention Center, Akampadam, Nilambur, Kerala',
         location: 'Eden Convention Center, Adyanpara Road, Akampadam, Nilambur, Kerala 679329',
         startTime: '2026-09-13T10:30:00',
         endTime: '2026-09-13T13:00:00'
       },
-      {
-        uid: 'arunima-nithin-reception-20260914@wedding.invite',
+      reception: {
         title: 'Arunima & Nithin Wedding Reception',
         description: 'Reception at KS Convention Centre, Nilambur, Kerala',
         location: 'KS Convention Centre, Pulikkalody, Mampad–Wandoor Road, Nilambur, Kerala 679329',
         startTime: '2026-09-14T17:00:00',
         endTime: '2026-09-14T20:30:00'
       }
-    ];
+    };
 
     // Format as UTC for better cross-device compatibility
     const formatCalendarDate = (dateStr: string) =>
       new Date(dateStr).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
 
-    // All devices: open calendar page directly (no ICS download)
-    const ceremony = events[0];
-    const reception = events[1];
-    const combinedDescription = `${ceremony.description}\n\nAlso save:\n${reception.title}\n${reception.startTime} - ${reception.endTime}\n${reception.location}`;
-    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ceremony.title)}&dates=${formatCalendarDate(ceremony.startTime)}/${formatCalendarDate(ceremony.endTime)}&details=${encodeURIComponent(combinedDescription)}&location=${encodeURIComponent(ceremony.location)}`;
+    const userAgent = navigator.userAgent;
+    const isIOS = /iPad|iPhone|iPod/.test(userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const iosCalendarFileByEvent = {
+      wedding: '/wedding-ceremony.ics',
+      reception: '/wedding-reception.ics'
+    } as const;
+
+    if (isIOS) {
+      const icsUrl = new URL(iosCalendarFileByEvent[eventType], window.location.origin).href;
+      const appleCalendarUrl = icsUrl.replace(/^https?/, 'webcal');
+      window.location.href = appleCalendarUrl;
+      return;
+    }
+
+    const selectedEvent = events[eventType];
+    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(selectedEvent.title)}&dates=${formatCalendarDate(selectedEvent.startTime)}/${formatCalendarDate(selectedEvent.endTime)}&details=${encodeURIComponent(selectedEvent.description)}&location=${encodeURIComponent(selectedEvent.location)}`;
     window.location.href = googleCalendarUrl;
   };
 
@@ -921,14 +930,23 @@ export default function App() {
               </motion.div>
               <h3 className="text-2xl font-serif text-ink mb-2">Eden Convention Center</h3>
               <p className="text-soft-blue mb-6 font-serif italic text-sm">{t.place.address}</p>
-              <a
-                href="https://maps.app.goo.gl/1322ZxpxwhrF1wK1A"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block px-6 py-2 bg-white/90 text-med-blue border border-med-blue/20 rounded-full font-sans text-xs tracking-widest uppercase hover:bg-med-blue hover:text-white transition-all"
-              >
-                {t.place.viewMap}
-              </a>
+              <div className="flex flex-col items-center gap-3">
+                <a
+                  href="https://maps.app.goo.gl/1322ZxpxwhrF1wK1A"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-6 py-2 bg-white/90 text-med-blue border border-med-blue/20 rounded-full font-sans text-xs tracking-widest uppercase hover:bg-med-blue hover:text-white transition-all"
+                >
+                  {t.place.viewMap}
+                </a>
+                <button
+                  type="button"
+                  onClick={() => handleAddToCalendar('wedding')}
+                  className="inline-block px-6 py-2 bg-white/90 text-med-blue border border-med-blue/20 rounded-full font-sans text-xs tracking-widest uppercase hover:bg-med-blue hover:text-white transition-all"
+                >
+                  {t.rsvp.addToCalendar}
+                </button>
+              </div>
             </div>
           </motion.div>
 
@@ -954,29 +972,25 @@ export default function App() {
               </motion.div>
               <h3 className="text-2xl font-serif text-ink mb-2">KS Convention Centre</h3>
               <p className="text-soft-blue mb-6 font-serif italic text-sm">{t.place.address2}</p>
-              <a
-                href="https://maps.app.goo.gl/CDdNchSH5qXrDrdo9"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block px-6 py-2 bg-white/90 text-med-blue border border-med-blue/20 rounded-full font-sans text-xs tracking-widest uppercase hover:bg-med-blue hover:text-white transition-all"
-              >
-                {t.place.viewMap2}
-              </a>
+              <div className="flex flex-col items-center gap-3">
+                <a
+                  href="https://maps.app.goo.gl/CDdNchSH5qXrDrdo9"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-6 py-2 bg-white/90 text-med-blue border border-med-blue/20 rounded-full font-sans text-xs tracking-widest uppercase hover:bg-med-blue hover:text-white transition-all"
+                >
+                  {t.place.viewMap2}
+                </a>
+                <button
+                  type="button"
+                  onClick={() => handleAddToCalendar('reception')}
+                  className="inline-block px-6 py-2 bg-white/90 text-med-blue border border-med-blue/20 rounded-full font-sans text-xs tracking-widest uppercase hover:bg-med-blue hover:text-white transition-all"
+                >
+                  {t.rsvp.addToCalendar}
+                </button>
+              </div>
             </div>
           </motion.div>
-
-          <div className="p-5 md:p-6 rounded-sm border border-soft-blue/20 bg-white/70 backdrop-blur-[1px] text-center shadow-sm">
-            <p className="text-[10px] md:text-xs uppercase tracking-widest text-soft-blue font-sans mb-3">
-              {lang === 'ml' ? 'സെപ്റ്റംബർ 13 · കലണ്ടറിൽ സംരക്ഷിക്കുക' : 'September 13 · Save in your calendar'}
-            </p>
-            <button
-              onClick={handleAddToCalendar}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-med-blue text-white rounded-full font-sans text-xs md:text-sm tracking-widest uppercase hover:bg-soft-blue transition-colors shadow-lg"
-            >
-              <CalendarPlus size={18} />
-              {t.rsvp.addToCalendar}
-            </button>
-          </div>
         </div>
       </Section>
 
@@ -1035,21 +1049,40 @@ export default function App() {
           <div className="max-w-sm mx-auto">
             <div className="p-6 bg-paper/50 rounded-sm border border-soft-blue/10 text-center">
               <p className="text-[10px] uppercase tracking-widest text-soft-blue mb-3 font-sans">Phone / WhatsApp</p>
-              <div className="flex flex-wrap items-center justify-center gap-3">
-                <code className="text-lg md:text-2xl font-serif text-med-blue tracking-wide break-all">+919961863784</code>
-                <div className="flex items-center gap-3 shrink-0">
-                  <CopyButton text="+919961863784" label={t.gift.copy} copiedLabel={t.gift.copied} />
-                  <a
-                    href="https://wa.me/919961863784"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Chat on WhatsApp"
-                    className="flex items-center justify-center w-[26px] h-[26px] rounded-full bg-[#25D366] hover:bg-[#1ebe5d] active:scale-95 transition-all shadow-sm shrink-0"
-                  >
-                    <svg viewBox="0 0 24 24" fill="white" className="w-[14px] h-[14px]" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                    </svg>
-                  </a>
+              <div className="space-y-3">
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <code className="text-lg md:text-2xl font-serif text-med-blue tracking-wide break-all">+919961863784</code>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <CopyButton text="+919961863784" label={t.gift.copy} copiedLabel={t.gift.copied} />
+                    <a
+                      href="https://wa.me/919961863784"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Chat on WhatsApp"
+                      className="flex items-center justify-center w-[26px] h-[26px] rounded-full bg-[#25D366] hover:bg-[#1ebe5d] active:scale-95 transition-all shadow-sm shrink-0"
+                    >
+                      <svg viewBox="0 0 24 24" fill="white" className="w-[14px] h-[14px]" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <code className="text-lg md:text-2xl font-serif text-med-blue tracking-wide break-all">+918606566246</code>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <CopyButton text="+918606566246" label={t.gift.copy} copiedLabel={t.gift.copied} />
+                    <a
+                      href="https://wa.me/918606566246"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Chat on WhatsApp"
+                      className="flex items-center justify-center w-[26px] h-[26px] rounded-full bg-[#25D366] hover:bg-[#1ebe5d] active:scale-95 transition-all shadow-sm shrink-0"
+                    >
+                      <svg viewBox="0 0 24 24" fill="white" className="w-[14px] h-[14px]" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                      </svg>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>

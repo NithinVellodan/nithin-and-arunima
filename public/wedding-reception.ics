@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Arunima-Nithin Wedding//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:arunima-nithin-reception-20260914@wedding.invite
+DTSTAMP:20260520T000000Z
+DTSTART:20260914T113000Z
+DTEND:20260914T150000Z
+SUMMARY:Arunima & Nithin Wedding Reception
+DESCRIPTION:Reception at KS Convention Centre, Nilambur, Kerala
+LOCATION:KS Convention Centre, Pulikkalody, Mampad-Wandoor Road, Nilambur, Kerala 679329
+END:VEVENT
+END:VCALENDAR
