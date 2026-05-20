@@ -78,7 +78,20 @@ const Countdown = ({ lang }: { lang: Language }) => {
         { label: t.seconds, value: timeLeft.seconds },
       ].map((item, i) => (
         <div key={i} className="text-center">
-          <div className="text-3xl md:text-5xl font-serif font-semibold text-med-blue">{item.value.toString().padStart(2, '0')}</div>
+          <div className="relative h-12 md:h-16 flex items-center justify-center overflow-hidden">
+            <AnimatePresence mode="popLayout">
+              <motion.div
+                key={item.value}
+                initial={{ y: -28, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 28, opacity: 0 }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                className="text-3xl md:text-5xl font-serif font-semibold text-med-blue"
+              >
+                {item.value.toString().padStart(2, '0')}
+              </motion.div>
+            </AnimatePresence>
+          </div>
           <div className="text-[10px] md:text-xs uppercase tracking-widest text-med-blue mt-1 font-sans font-semibold">{item.label}</div>
         </div>
       ))}
@@ -90,8 +103,22 @@ const Section = ({ title, children, id, className = "" }: { title?: string, chil
   <section id={id} className={`py-20 px-6 max-w-4xl mx-auto relative ${className}`}>
     {title && (
       <div className="text-center mb-12">
-        <h2 className="text-4xl md:text-5xl font-serif text-med-blue mb-4">{title}</h2>
-        <div className="w-24 h-px bg-accent-blue mx-auto opacity-50" />
+        <motion.h2
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          viewport={{ once: true }}
+          className="text-4xl md:text-5xl font-serif text-med-blue mb-4"
+        >
+          {title}
+        </motion.h2>
+        <motion.div
+          initial={{ width: 0 }}
+          whileInView={{ width: '6rem' }}
+          transition={{ duration: 0.9, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="h-px bg-accent-blue mx-auto opacity-50"
+        />
       </div>
     )}
     {children}
@@ -125,6 +152,36 @@ const MonogramBadge = ({ className = "" }: { className?: string }) => (
     <span className="relative -right-1">N</span>
   </div>
 );
+
+const FloatingPetals = () => {
+  const petals = useMemo(() =>
+    Array.from({ length: 14 }, (_, i) => ({
+      id: i,
+      left: `${(i * 7.3 + 3) % 100}%`,
+      delay: (i * 1.3) % 10,
+      duration: 10 + (i * 2.1) % 10,
+      size: 10 + (i * 3) % 10,
+      drift: i % 2 === 0 ? 30 : -30,
+      symbol: ['✦', '✿', '❀', '✾', '·'][i % 5],
+    })), []
+  );
+
+  return (
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+      {petals.map(p => (
+        <motion.div
+          key={p.id}
+          className="absolute text-med-blue/15 select-none"
+          style={{ left: p.left, top: '-30px', fontSize: p.size }}
+          animate={{ y: ['0vh', '110vh'], x: [0, p.drift, 0], rotate: [0, 180, 360] }}
+          transition={{ duration: p.duration, delay: p.delay, repeat: Infinity, ease: 'linear' }}
+        >
+          {p.symbol}
+        </motion.div>
+      ))}
+    </div>
+  );
+};
 
 const CopyButton = ({ text, label, copiedLabel }: { text: string, label: string, copiedLabel: string }) => {
   const [copied, setCopied] = useState(false);
@@ -335,6 +392,29 @@ export default function App() {
     }
   };
 
+  // Transition to content when user scrolls/swipes on the envelope screen
+  useEffect(() => {
+    if (step !== 'opened') return;
+
+    const goToContent = () => setStep('content');
+
+    let touchStartY = 0;
+    const onTouchStart = (e: TouchEvent) => { touchStartY = e.touches[0].clientY; };
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches[0].clientY < touchStartY - 20) goToContent();
+    };
+
+    window.addEventListener('wheel', goToContent, { once: true });
+    window.addEventListener('touchstart', onTouchStart);
+    window.addEventListener('touchmove', onTouchMove);
+
+    return () => {
+      window.removeEventListener('wheel', goToContent);
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchmove', onTouchMove);
+    };
+  }, [step]);
+
   // Get gendered greeting based on guest gender and language
   const greeting = guest ? getGreeting(lang, guest.gender) : t.letter.dear;
 
@@ -356,7 +436,6 @@ export default function App() {
 
     setStep('opening');
     setTimeout(() => setStep('opened'), 600);
-    setTimeout(() => setStep('content'), 2800);
   };
 
   const handleAddToCalendar = () => {
@@ -553,6 +632,18 @@ export default function App() {
                   transition={{ delay: 1.7, duration: 0.8 }}
                   className="h-px bg-accent-blue mt-8 opacity-30 relative z-10"
                 />
+
+                {/* Scroll to continue hint */}
+                <motion.div
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: [0, 1, 0], y: [6, 0, 6] }}
+                  transition={{ delay: 2.6, duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+                  className="mt-6 flex flex-col items-center gap-1 text-med-blue/50 relative z-10 cursor-pointer select-none"
+                  onClick={() => setStep('content')}
+                >
+                  <span className="text-[10px] uppercase tracking-[0.25em] font-sans">Scroll to open</span>
+                  <ChevronDown size={18} />
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -568,6 +659,7 @@ export default function App() {
         </div>
         <div className="hidden md:block fixed inset-0 -z-10 main-bg" />
         <div className="absolute inset-0 bg-overlay-white pointer-events-none" />
+        <FloatingPetals />
         <div className="relative z-10">
           <LanguageToggle current={lang} onChange={setLang} />
 
@@ -586,19 +678,51 @@ export default function App() {
 
         <header className="h-screen flex flex-col items-center justify-center text-center px-6 relative">
         <div className="absolute inset-0 tile-pattern opacity-10" />
+
+        {/* Sparkle dots floating around the hero */}
+        {[...Array(8)].map((_, i) => (
+          <motion.span
+            key={i}
+            className="absolute text-med-blue/25 select-none pointer-events-none text-lg"
+            style={{ left: `${10 + i * 11}%`, top: `${15 + (i % 3) * 22}%` }}
+            animate={{ opacity: [0, 1, 0], scale: [0.5, 1.2, 0.5], rotate: [0, 90, 0] }}
+            transition={{ duration: 2.5 + i * 0.4, delay: i * 0.6, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            ✦
+          </motion.span>
+        ))}
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          viewport={{ once: true }}
         >
-          <div className="flex items-center justify-center gap-4 mb-6">
+          <motion.div
+            initial={{ opacity: 0, scaleX: 0 }}
+            animate={{ opacity: 1, scaleX: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="flex items-center justify-center gap-4 mb-6"
+          >
             <div className="w-12 h-px bg-med-blue opacity-30" />
             <span className="font-sans text-xs tracking-[0.3em] uppercase text-med-blue font-semibold">Save the Date</span>
             <div className="w-12 h-px bg-med-blue opacity-30" />
-          </div>
-          <h1 className="text-6xl md:text-8xl font-serif text-med-blue mb-4">Arunima & Nithin</h1>
-          <p className="text-xl md:text-2xl font-serif italic text-soft-blue">{t.hero.date}</p>
+          </motion.div>
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="text-6xl md:text-8xl font-serif text-med-blue mb-4"
+          >
+            {t.hero.name}
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.7 }}
+            className="text-xl md:text-2xl font-serif italic text-soft-blue"
+          >
+            {t.hero.date}
+          </motion.p>
           <Countdown lang={lang} />
           <motion.div
             animate={{ y: [0, 10, 0] }}
@@ -626,7 +750,15 @@ export default function App() {
           <div className="relative z-10">
           <div className="text-base md:text-lg leading-relaxed text-soft-blue font-serif max-w-2xl mx-auto text-left space-y-4">
             {t.story.content.split('\n\n').map((paragraph, i) => (
-              <p key={i}>{paragraph}</p>
+              <motion.p
+                key={i}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.65, delay: i * 0.15 }}
+                viewport={{ once: true }}
+              >
+                {paragraph}
+              </motion.p>
             ))}
           </div>
           <div className="mt-16 grid grid-cols-2 gap-6 md:gap-10 max-w-3xl mx-auto">
@@ -707,11 +839,12 @@ export default function App() {
               ].map((item, i) => (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, x: -20 }}
+                  initial={{ opacity: 0, x: -30 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1 }}
+                  whileHover={{ y: -3, boxShadow: '0 8px 32px rgba(107,147,196,0.18)' }}
+                  transition={{ delay: i * 0.12, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                   viewport={{ once: true }}
-                  className="flex items-center gap-6 p-6 rounded-sm border-l-2 border-med-blue shadow-sm hover:shadow-md transition-shadow relative overflow-hidden"
+                  className="flex items-center gap-6 p-6 rounded-sm border-l-2 border-med-blue shadow-sm relative overflow-hidden cursor-default"
                   style={{
                     backgroundImage: 'url(/images/test.png)',
                     backgroundSize: 'cover',
@@ -724,7 +857,13 @@ export default function App() {
                   <div className="flex-1 relative z-10">
                     <h3 className="text-xl font-serif text-ink">{item.event}</h3>
                   </div>
-                  <item.icon className="text-soft-blue opacity-40 relative z-10" size={20} />
+                  <motion.div
+                    animate={{ rotate: [0, 15, -15, 0] }}
+                    transition={{ duration: 3 + i, repeat: Infinity, ease: 'easeInOut', delay: i * 0.5 }}
+                    className="relative z-10"
+                  >
+                    <item.icon className="text-soft-blue opacity-40" size={20} />
+                  </motion.div>
                 </motion.div>
               ))}
             </div>
@@ -743,11 +882,12 @@ export default function App() {
               {lang === 'ml' ? 'സെപ്റ്റംബർ 14 · വിവാഹ റിസെപ്ഷൻ' : 'September 14 · Wedding Reception'}
             </p>
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 }}
+              whileHover={{ y: -3, boxShadow: '0 8px 32px rgba(107,147,196,0.18)' }}
+              transition={{ delay: 0.12, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               viewport={{ once: true }}
-              className="flex items-center gap-6 p-6 rounded-sm border-l-2 border-med-blue shadow-sm hover:shadow-md transition-shadow relative overflow-hidden"
+              className="flex items-center gap-6 p-6 rounded-sm border-l-2 border-med-blue shadow-sm relative overflow-hidden cursor-default"
               style={{
                 backgroundImage: 'url(/images/test.png)',
                 backgroundSize: 'cover',
@@ -761,7 +901,13 @@ export default function App() {
                 <h3 className="text-xl font-serif text-ink">{lang === 'ml' ? 'വിവാഹ റിസെപ്ഷൻ' : 'Wedding Reception'}</h3>
                 <p className="text-xs font-sans text-soft-blue mt-1 opacity-70">KS Convention Centre, Nilambur</p>
               </div>
-              <Music className="text-soft-blue opacity-40 relative z-10" size={20} />
+              <motion.div
+                animate={{ rotate: [0, 15, -15, 0] }}
+                transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+                className="relative z-10"
+              >
+                <Music className="text-soft-blue opacity-40" size={20} />
+              </motion.div>
             </motion.div>
           </div>
 
@@ -772,7 +918,12 @@ export default function App() {
       <Section title={t.place.title} id="place">
         <div className="space-y-6">
           {/* Wedding Venue */}
-          <div
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            viewport={{ once: true }}
+            whileHover={{ y: -4, boxShadow: '0 16px 48px rgba(107,147,196,0.18)' }}
             className="p-8 md:p-12 shadow-xl rounded-sm border border-soft-blue/10 relative overflow-hidden text-center"
             style={{ backgroundImage: 'url(/images/hacienda.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
           >
@@ -797,10 +948,15 @@ export default function App() {
                 {t.place.viewMap}
               </a>
             </div>
-          </div>
+          </motion.div>
 
           {/* Reception Venue */}
-          <div
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            viewport={{ once: true }}
+            whileHover={{ y: -4, boxShadow: '0 16px 48px rgba(107,147,196,0.18)' }}
             className="p-8 md:p-12 shadow-xl rounded-sm border border-soft-blue/10 relative overflow-hidden text-center"
             style={{ backgroundImage: 'url(/images/haciendaTwo.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
           >
@@ -825,7 +981,7 @@ export default function App() {
                 {t.place.viewMap2}
               </a>
             </div>
-          </div>
+          </motion.div>
         </div>
       </Section>
 
@@ -884,9 +1040,22 @@ export default function App() {
           <div className="max-w-sm mx-auto">
             <div className="p-6 bg-paper/50 rounded-sm border border-soft-blue/10 text-center">
               <p className="text-[10px] uppercase tracking-widest text-soft-blue mb-3 font-sans">Phone / WhatsApp</p>
-              <div className="flex items-center justify-center gap-4">
-                <code className="text-2xl font-serif text-med-blue tracking-wide">+919961863784</code>
-                <CopyButton text="+919961863784" label={t.gift.copy} copiedLabel={t.gift.copied} />
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <code className="text-lg md:text-2xl font-serif text-med-blue tracking-wide break-all">+919961863784</code>
+                <div className="flex items-center gap-3 shrink-0">
+                  <CopyButton text="+919961863784" label={t.gift.copy} copiedLabel={t.gift.copied} />
+                  <a
+                    href="https://wa.me/919961863784"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Chat on WhatsApp"
+                    className="flex items-center justify-center w-[26px] h-[26px] rounded-full bg-[#25D366] hover:bg-[#1ebe5d] active:scale-95 transition-all shadow-sm shrink-0"
+                  >
+                    <svg viewBox="0 0 24 24" fill="white" className="w-[14px] h-[14px]" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    </svg>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -1044,12 +1213,33 @@ export default function App() {
 
       {/* Footer */}
       <footer className="py-20 text-center border-t border-soft-blue/10">
-        <img
+        <motion.img
           src="/images/logo.png"
           alt="Wedding Logo"
           className="w-12 h-12 mb-4 opacity-90 mx-auto object-contain"
+          animate={{ y: [0, -6, 0] }}
+          transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
         />
-        <p className="font-serif text-soft-blue italic">A & N • 2026</p>
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          viewport={{ once: true }}
+          className="font-serif text-soft-blue italic"
+        >
+          A & N • 2026
+        </motion.p>
+        <div className="flex justify-center gap-2 mt-4">
+          {[0, 0.3, 0.6].map((delay, i) => (
+            <motion.div
+              key={i}
+              animate={{ scale: [1, 1.35, 1], opacity: [0.3, 0.7, 0.3] }}
+              transition={{ repeat: Infinity, duration: 1.6, delay, ease: 'easeInOut' }}
+            >
+              <Heart className="text-med-blue" size={14} />
+            </motion.div>
+          ))}
+        </div>
       </footer>
       </div>
     </div>

@@ -162,6 +162,7 @@ export const TRANSLATIONS: Record<Language, Translation> = {
       open: "Open Invitation"
     },
     hero: {
+      name: "Arunima & Nithin",
       countdown: "Counting down to our big day",
       date: "September 13, 2026 • Nilambur, Kerala",
       days: "Days",
@@ -235,6 +236,7 @@ export const TRANSLATIONS: Record<Language, Translation> = {
       open: "ക്ഷണം തുറക്കുക"
     },
     hero: {
+      name: "അരുണിമ & നിതിൻ",
       countdown: "ഞങ്ങളുടെ മഹത്തായ ദിനത്തിലേക്കുള്ള കണക്കെടുപ്പ്",
       date: "സെപ്റ്റംബർ 13, 2026 • നിലമ്പൂർ, കേരളം",
       days: "ദിവസങ്ങൾ",
@@ -272,7 +274,7 @@ export const TRANSLATIONS: Record<Language, Translation> = {
     },
     gift: {
       title: "ബന്ധപ്പെടുക",
-      message: "RSVP-യ്ക്കും അന്വേഷണങ്ങൾക്കും ദയവായി ഞങ്ങളെ ബന്ധപ്പെടുക.",
+      message: "അന്വേഷണങ്ങൾക്കും ദയവായി ഞങ്ങളെ ബന്ധപ്പെടുക.",
       copy: "പകർത്തുക",
       copied: "പകർത്തി!"
     },

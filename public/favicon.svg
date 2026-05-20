@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Circular background -->
+  <circle cx="32" cy="32" r="31" fill="white" stroke="#6B93C4" stroke-width="1.5"/>
+  <!-- A & N monogram in serif-style -->
+  <text
+    x="32" y="40"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="22"
+    letter-spacing="-1"
+    fill="#2B5FA5"
+  >A<tspan fill="#9CB8D6" font-size="17" dy="-1">&amp;</tspan><tspan fill="#2B5FA5" font-size="22" dy="1">N</tspan></text>
+</svg>

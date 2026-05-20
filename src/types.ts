@@ -14,6 +14,7 @@ export interface Translation {
     open: string;
   };
   hero: {
+    name: string;
     countdown: string;
     date: string;
     days: string;
