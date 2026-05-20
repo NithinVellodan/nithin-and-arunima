@@ -823,6 +823,9 @@ export default function App() {
             <p className="text-[11px] uppercase tracking-widest text-soft-blue font-sans mb-4 text-center">
               {lang === 'ml' ? 'സെപ്റ്റംബർ 13 · വിവാഹ ദിനം' : 'September 13 · Wedding Day'}
             </p>
+            <p className="text-xs font-sans text-soft-blue mb-4 text-center opacity-70">
+              {lang === 'ml' ? 'Eden Convention Center, നിലമ്പൂർ' : 'Eden Convention Center, Nilambur'}
+            </p>
             <div className="space-y-4">
               {[
                 { time: "10:30 AM", event: t.program.ceremony, icon: Heart },
@@ -872,6 +875,9 @@ export default function App() {
             <p className="text-[11px] uppercase tracking-widest text-soft-blue font-sans mb-4 text-center">
               {lang === 'ml' ? 'സെപ്റ്റംബർ 14 · വിവാഹ റിസെപ്ഷൻ' : 'September 14 · Wedding Reception'}
             </p>
+            <p className="text-xs font-sans text-soft-blue mb-4 text-center opacity-70">
+              {lang === 'ml' ? 'KS Convention Centre, നിലമ്പൂർ' : 'KS Convention Centre, Nilambur'}
+            </p>
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -890,7 +896,6 @@ export default function App() {
               <div className="w-px h-8 bg-accent-blue opacity-30 relative z-10" />
               <div className="flex-1 relative z-10">
                 <h3 className="text-xl font-serif text-ink">{lang === 'ml' ? 'വിവാഹ റിസെപ്ഷൻ' : 'Wedding Reception'}</h3>
-                <p className="text-xs font-sans text-soft-blue mt-1 opacity-70">KS Convention Centre, Nilambur</p>
               </div>
               <motion.div
                 animate={{ rotate: [0, 15, -15, 0] }}
