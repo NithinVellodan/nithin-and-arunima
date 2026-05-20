@@ -755,7 +755,7 @@ export default function App() {
               }}
             >
               <div className="absolute inset-0 bg-white/65" />
-              <div className="text-lg font-serif text-med-blue w-28 relative z-10 shrink-0">6:00 PM</div>
+              <div className="text-lg font-serif text-med-blue w-28 relative z-10 shrink-0 whitespace-nowrap">5:00 PM -8:30 PM</div>
               <div className="w-px h-8 bg-accent-blue opacity-30 relative z-10" />
               <div className="flex-1 relative z-10">
                 <h3 className="text-xl font-serif text-ink">{lang === 'ml' ? 'വിവാഹ റിസെപ്ഷൻ' : 'Wedding Reception'}</h3>
