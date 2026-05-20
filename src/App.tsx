@@ -439,53 +439,69 @@ export default function App() {
   };
 
   const handleAddToCalendar = () => {
-    const eventDetails = {
-      title: 'Arunima & Nithin Wedding',
-      description: 'Wedding ceremony at Eden Convention Center, Akampadam, Nilambur, Kerala',
-      location: 'Eden Convention Center, Adyanpara Road, Akampadam, Nilambur, Kerala 679329',
-      startTime: '2026-09-13T10:30:00',
-      endTime: '2026-09-13T13:00:00'
-    };
+    const events = [
+      {
+        uid: 'arunima-nithin-wedding-20260913@wedding.invite',
+        title: 'Arunima & Nithin Wedding Ceremony',
+        description: 'Wedding ceremony at Eden Convention Center, Akampadam, Nilambur, Kerala',
+        location: 'Eden Convention Center, Adyanpara Road, Akampadam, Nilambur, Kerala 679329',
+        startTime: '2026-09-13T10:30:00',
+        endTime: '2026-09-13T13:00:00'
+      },
+      {
+        uid: 'arunima-nithin-reception-20260914@wedding.invite',
+        title: 'Arunima & Nithin Wedding Reception',
+        description: 'Reception at KS Convention Centre, Nilambur, Kerala',
+        location: 'KS Convention Centre, Pulikkalody, Mampad–Wandoor Road, Nilambur, Kerala 679329',
+        startTime: '2026-09-14T17:00:00',
+        endTime: '2026-09-14T20:30:00'
+      }
+    ];
 
-    // Detect iOS
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
-    // Detect Android
-    const isAndroid = /Android/.test(navigator.userAgent);
+    const userAgent = navigator.userAgent;
+    const isIOS = /iPad|iPhone|iPod/.test(userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isAndroid = /Android/i.test(userAgent);
 
-    // Format dates for Google Calendar (yyyyMMddTHHmmss)
-    const formatGoogleDate = (dateStr: string) => {
-      return dateStr.replace(/[-:]/g, '').replace('.', '');
-    };
+    // Format as UTC for better cross-device compatibility
+    const formatCalendarDate = (dateStr: string) =>
+      new Date(dateStr).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
 
-    if (isIOS || isAndroid) {
-      // For mobile devices, use Google Calendar link which works on both iOS and Android
-      const startDate = formatGoogleDate(eventDetails.startTime) + 'Z';
-      const endDate = formatGoogleDate(eventDetails.endTime) + 'Z';
+    const icsUrl = new URL('/wedding-event.ics', window.location.origin).href;
 
-      const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventDetails.title)}&dates=${startDate}/${endDate}&details=${encodeURIComponent(eventDetails.description)}&location=${encodeURIComponent(eventDetails.location)}`;
-
-      // Open in new tab/window which will redirect to the calendar app
-      window.open(googleCalendarUrl, '_blank');
+    if (isIOS) {
+      const appleCalendarUrl = icsUrl.replace(/^https?/, 'webcal');
+      window.location.href = appleCalendarUrl;
+    } else if (isAndroid) {
+      // Single tap import containing both days (ceremony + reception)
+      window.location.href = icsUrl;
     } else {
       // For desktop, use ICS file download
+      const eventBlocks = events.map((event) => [
+        'BEGIN:VEVENT',
+        `UID:${event.uid}`,
+        `DTSTAMP:${formatCalendarDate(new Date().toISOString())}`,
+        `DTSTART:${formatCalendarDate(event.startTime)}`,
+        `DTEND:${formatCalendarDate(event.endTime)}`,
+        `SUMMARY:${event.title}`,
+        `DESCRIPTION:${event.description}`,
+        `LOCATION:${event.location}`,
+        'END:VEVENT'
+      ].join('\r\n'));
+
       const icsContent = [
         'BEGIN:VCALENDAR',
         'VERSION:2.0',
-        'PRODID:-//Wedding Invitation//EN',
-        'BEGIN:VEVENT',
-        `DTSTART:${formatGoogleDate(eventDetails.startTime)}`,
-        `DTEND:${formatGoogleDate(eventDetails.endTime)}`,
-        `SUMMARY:${eventDetails.title}`,
-        `DESCRIPTION:${eventDetails.description}`,
-        `LOCATION:${eventDetails.location}`,
-        'END:VEVENT',
+        'PRODID:-//Arunima-Nithin Wedding//EN',
+        'CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH',
+        ...eventBlocks,
         'END:VCALENDAR'
       ].join('\r\n');
 
       const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = 'wedding-camila-amin.ics';
+      link.download = 'arunima-nithin-wedding.ics';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -531,7 +547,7 @@ export default function App() {
   };
 
   const envelopeView = (
-    <div className="fixed inset-0 hero-bg flex items-center justify-center overflow-hidden p-4 z-[1000]">
+    <div className={`fixed inset-0 hero-bg flex items-center justify-center overflow-hidden p-4 z-[1000] ${lang === 'ml' ? 'lang-ml-mobile' : ''}`}>
           <div className="absolute inset-0 bg-overlay-dim backdrop-blur-[2px]" />
           <LanguageToggle current={lang} onChange={setLang} />
         
@@ -652,7 +668,7 @@ export default function App() {
   );
 
   const contentView = (
-    <div className="min-h-screen selection:bg-accent-blue/30 overflow-x-hidden relative">
+    <div className={`min-h-screen selection:bg-accent-blue/30 overflow-x-hidden relative ${lang === 'ml' ? 'lang-ml-mobile' : ''}`}>
         {/* Fixed background for mobile, regular background for desktop */}
         <div className="fixed inset-0 -z-10 md:hidden">
           <div className="w-full h-full bg-cover bg-center bg-no-repeat" style={{ backgroundImage: 'url(/images/hero-background-mobile.png)' }} />
@@ -784,6 +800,8 @@ export default function App() {
                     src="/images/paris.jpeg"
                     alt="Paris"
                     className="w-full h-full object-cover transition-all duration-700"
+                    loading="lazy"
+                    decoding="async"
                     style={{ objectPosition: 'center 20%' }}
                   />
                 </div>
@@ -812,6 +830,8 @@ export default function App() {
                     src="/images/proposal.jpg"
                     alt="Proposal"
                     className="w-full h-full object-cover transition-all duration-700"
+                    loading="lazy"
+                    decoding="async"
                     style={{ objectPosition: '35% center' }}
                   />
                 </div>
@@ -982,6 +1002,19 @@ export default function App() {
               </a>
             </div>
           </motion.div>
+
+          <div className="p-5 md:p-6 rounded-sm border border-soft-blue/20 bg-white/70 backdrop-blur-[1px] text-center shadow-sm">
+            <p className="text-[10px] md:text-xs uppercase tracking-widest text-soft-blue font-sans mb-3">
+              {lang === 'ml' ? 'സെപ്റ്റംബർ 13 · കലണ്ടറിൽ സംരക്ഷിക്കുക' : 'September 13 · Save in your calendar'}
+            </p>
+            <button
+              onClick={handleAddToCalendar}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-med-blue text-white rounded-full font-sans text-xs md:text-sm tracking-widest uppercase hover:bg-soft-blue transition-colors shadow-lg"
+            >
+              <CalendarPlus size={18} />
+              {t.rsvp.addToCalendar}
+            </button>
+          </div>
         </div>
       </Section>
 
