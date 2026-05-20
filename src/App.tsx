@@ -458,54 +458,16 @@ export default function App() {
       }
     ];
 
-    const userAgent = navigator.userAgent;
-    const isIOS = /iPad|iPhone|iPod/.test(userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-    const isAndroid = /Android/i.test(userAgent);
-
     // Format as UTC for better cross-device compatibility
     const formatCalendarDate = (dateStr: string) =>
       new Date(dateStr).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
 
-    const icsUrl = new URL('/wedding-event.ics', window.location.origin).href;
-
-    if (isIOS) {
-      const appleCalendarUrl = icsUrl.replace(/^https?/, 'webcal');
-      window.location.href = appleCalendarUrl;
-    } else if (isAndroid) {
-      // Single tap import containing both days (ceremony + reception)
-      window.location.href = icsUrl;
-    } else {
-      // For desktop, use ICS file download
-      const eventBlocks = events.map((event) => [
-        'BEGIN:VEVENT',
-        `UID:${event.uid}`,
-        `DTSTAMP:${formatCalendarDate(new Date().toISOString())}`,
-        `DTSTART:${formatCalendarDate(event.startTime)}`,
-        `DTEND:${formatCalendarDate(event.endTime)}`,
-        `SUMMARY:${event.title}`,
-        `DESCRIPTION:${event.description}`,
-        `LOCATION:${event.location}`,
-        'END:VEVENT'
-      ].join('\r\n'));
-
-      const icsContent = [
-        'BEGIN:VCALENDAR',
-        'VERSION:2.0',
-        'PRODID:-//Arunima-Nithin Wedding//EN',
-        'CALSCALE:GREGORIAN',
-        'METHOD:PUBLISH',
-        ...eventBlocks,
-        'END:VCALENDAR'
-      ].join('\r\n');
-
-      const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'arunima-nithin-wedding.ics';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
+    // All devices: open calendar page directly (no ICS download)
+    const ceremony = events[0];
+    const reception = events[1];
+    const combinedDescription = `${ceremony.description}\n\nAlso save:\n${reception.title}\n${reception.startTime} - ${reception.endTime}\n${reception.location}`;
+    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ceremony.title)}&dates=${formatCalendarDate(ceremony.startTime)}/${formatCalendarDate(ceremony.endTime)}&details=${encodeURIComponent(combinedDescription)}&location=${encodeURIComponent(ceremony.location)}`;
+    window.location.href = googleCalendarUrl;
   };
 
   const handleRsvp = async (e: FormEvent) => {
